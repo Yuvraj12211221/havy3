@@ -1,0 +1,114 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - thanks
+  - ask_hours
+  - ask_location
+  - ask_price
+  - ask_about_product
+  - order
+  - help
+  - ask_quality
+  - ask_delivery
+  - ask_payment
+  - complaint
+  - feedback
+  - small_talk
+  - ask_offers
+  - ask_team
+  - ask_contact
+  - nlu_fallback
+
+entities: []
+
+slots: {}
+
+responses:
+  utter_greet:
+    - text: "Hey there! 👋 Welcome! How can I help you today?"
+    - text: "Hello! 😊 Great to see you! What brings you here?"
+    - text: "Hi! 🎉 Happy to assist. What do you need?"
+    - text: "Greetings! 🌟 How can I make your day better?"
+
+  utter_goodbye:
+    - text: "Goodbye! 👋 Have a wonderful day!"
+    - text: "See you soon! Thanks for chatting with us! 😊"
+    - text: "Take care! Come back anytime! 🚀"
+    - text: "Farewell! We're always here if you need us! ✨"
+
+  utter_thanks:
+    - text: "You're welcome! 😊 Happy to help!"
+    - text: "Glad I could assist! Feel free to ask anything else!"
+    - text: "Thanks for chatting with us! 🙌"
+    - text: "Always happy to help! 💪"
+
+  utter_ask_hours:
+    - text: "📅 We're open Monday-Friday: 9:00 AM - 6:00 PM\n📅 Saturday: 10:00 AM - 4:00 PM\n📅 Sunday: Closed\n\nHow can I help you?"
+    - text: "⏰ Our business hours:\n• Weekdays: 9 AM - 6 PM\n• Saturday: 10 AM - 4 PM\n• Sunday: Closed\n\nWhat else do you need?"
+
+  utter_ask_location:
+    - text: "📍 You can find us at:\n123 Business Street\nCity, State 12345\n\nWould you like directions?"
+    - text: "🏢 Our office location:\nMain Street Business Park\nCity, State 12345\n\nFeel free to visit!"
+
+  utter_ask_price:
+    - text: "💰 Our pricing is very competitive!\n\n• Basic: $9.99/month\n• Professional: $29.99/month\n• Enterprise: Custom pricing\n\nWhich fits your needs?"
+    - text: "💵 Here are our price packages:\n• Starter: $9.99/month\n• Plus: $19.99/month\n• Premium: $49.99/month\n\nNeed more details?"
+
+  utter_ask_about_product:
+    - text: "🎯 We offer amazing products including:\n\n✓ Premium Software Solutions\n✓ Consulting Services\n✓ Support & Training\n✓ Custom Integrations\n\nWhat interests you?"
+    - text: "🌟 Our main offerings:\n• Cloud Services\n• Analytics Tools\n• Security Solutions\n• 24/7 Support\n\nTell me what you're looking for!"
+
+  utter_order:
+    - text: "🛒 Great choice! Let's get you set up!\n\nTo place an order:\n1. Choose your plan\n2. Provide your details\n3. Complete payment\n4. Start using immediately!\n\nReady?"
+    - text: "📦 Ready to order? Here's how:\n• Select your package\n• Fill in your info\n• Secure checkout\n• Get instant access!\n\nLet's go! 🚀"
+
+  utter_help:
+    - text: "🤝 I'm here to help! I can answer questions about:\n\n• Pricing & Plans\n• Products & Services\n• Delivery & Shipping\n• Technical Support\n• Business Hours\n\nWhat do you need?"
+    - text: "💡 Happy to assist! You can ask me about:\n✓ How our products work\n✓ Pricing information\n✓ Delivery details\n✓ Your account\n✓ Anything else!\n\nWhat's on your mind?"
+
+  utter_ask_quality:
+    - text: "⭐ Quality is our priority!\n\n✓ All products backed by warranty\n✓ 30-day money-back guarantee\n✓ ISO certified manufacturing\n✓ Rigorous quality testing\n✓ 99.9% customer satisfaction\n\nConvinced? 😊"
+    - text: "🏆 We guarantee the best quality:\n• Industry-leading standards\n• Lifetime support\n• Full refund guarantee\n• Award-winning products\n\nYour satisfaction matters!"
+
+  utter_ask_delivery:
+    - text: "🚚 Fast & Reliable Delivery:\n\n📦 Standard: 5-7 business days\n⚡ Express: 2-3 business days\n🚀 Overnight: Next business day\n🌍 Worldwide shipping available\n📍 Free delivery on orders $50+\n\nWhich works for you?"
+    - text: "✈️ Shipping Options:\n• Regular: 7 business days\n• Priority: 3 business days  \n• Overnight Available\n• International Delivery\n• Real-time tracking\n\nNeed anything else?"
+
+  utter_ask_payment:
+    - text: "💳 We accept all major payment methods:\n\n💰 Credit/Debit Cards (Visa, Mastercard, Amex)\n🏦 Bank Transfer\n💸 PayPal\n📱 Digital Wallets (Apple Pay, Google Pay)\n💷 Cryptocurrency (Bitcoin, Ethereum)\n\nChoose your preferred method!"
+    - text: "🔒 Secure Payment Options:\n✓ All major credit cards\n✓ Digital payments\n✓ Bank transfers\n✓ Installment plans available\n✓ 100% secure & encrypted\n\nReady to checkout?"
+
+  utter_complaint:
+    - text: "😟 I'm sorry to hear that! We take your feedback seriously.\n\n📞 Please contact our support team:\n• Email: support@company.com\n• Phone: 1-800-123-4567\n• Chat with us directly\n\nWe'll make it right! 💪"
+    - text: "😔 We're sorry you're not satisfied!\n\n🔧 Our team can help:\n• Quick replacements\n• Full refunds\n• Technical support\n• Free consultation\n\nLet's fix this together!"
+
+  utter_feedback:
+    - text: "🎉 Thank you so much! Your feedback means the world to us! 😊\n\nWe're committed to keeping the quality high. Please share more! ⭐"
+    - text: "✨ Wow! We're so happy you're satisfied! 🙌\n\nThanks for being an awesome customer! Your support helps us improve! 💖"
+
+  utter_small_talk:
+    - text: "I'm doing great, thanks for asking! 😊 How can I help you today?"
+    - text: "Doing fantastic! Ready to assist you with whatever you need! 🚀"
+    - text: "All good here! What brings you to our chat? 💬"
+
+  utter_ask_offers:
+    - text: "🎁 Check out our current promotions:\n\n🔥 Spring Sale: 25% off everything\n📦 Bundle Deal: Buy 2, Get 1 Free\n💝 First-time Buyer: Extra 15% off\n🎊 Referral Program: Earn rewards\n\nWhich interests you?"
+    - text: "🏷️ Amazing deals available:\n• Limited-time offers\n• Seasonal discounts\n• Bundle packages\n• Loyalty rewards\n\nDon't miss out! 🎯"
+
+  utter_ask_team:
+    - text: "👥 About Our Team:\n\n🎓 10+ years of industry experience\n🌐 Serving 100,000+ happy customers\n🏆 Award-winning service\n💼 Expert professionals\n🚀 Always innovating\n\nWe've got you covered!"
+    - text: "🌟 Our Story:\n• Founded in 2015\n• Grown to 50+ team members\n• Trusted by industry leaders\n• Passionate about helping customers\n• Constantly improving\n\nPart of our success story?"
+
+  utter_ask_contact:
+    - text: "📞 Get in touch with us!\n\n📧 Email: hello@company.com\n☎️ Phone: 1-800-123-4567\n💬 LiveChat: Available 24/7\n🐙 Social: @company on all platforms\n📍 Office: 123 Business St, City\n\nHow can we help?"
+    - text: "🔗 Contact Us:\n• Phone: +1-800-HELP-123\n• Email: support@company.com\n• Website: www.company.com\n• Live Chat: Right here!\n• WhatsApp: +1-800-HELP-123\n\nReady to connect!"
+
+  utter_nlu_fallback:
+    - text: "I'm not quite sure what you mean. 🤔 Could you rephrase that or try asking about:\n\n• Pricing\n• Delivery\n• Products\n• Hours\n• Support\n\nI'm here to help!"
+    - text: "Hmm, I didn't catch that. 😅 Let me help you better!\n\nYou can ask me about product info, pricing, orders, delivery, and more!\n\nWhat would you like to know?"
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

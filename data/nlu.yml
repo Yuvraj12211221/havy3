@@ -1,0 +1,370 @@
+version: "3.1"
+
+nlu:
+
+- intent: ask_faq
+  examples: |
+    - support hours
+    - what are support hours
+    - what time is support available
+    - when is support open
+    - support timing
+    - customer support hours
+    - when can I contact support
+    - support availability
+    - tell me support hours
+    - how long is support available
+    - help hours
+    - working hours
+    - service hours
+    - support open time
+
+- intent: greet
+  examples: |
+    - hello
+    - hi
+    - hey
+    - good morning
+    - good afternoon
+    - good evening
+    - greetings
+    - hello there
+    - hi there
+    - hey there
+    - howdy
+    - what's up
+    - good day
+
+- intent: goodbye
+  examples: |
+    - goodbye
+    - bye
+    - see you
+    - see you later
+    - talk to you later
+    - have a nice day
+    - take care
+    - farewell
+    - until next time
+    - bye bye
+    - catch you later
+
+- intent: affirm
+  examples: |
+    - yes
+    - yeah
+    - yep
+    - sure
+    - absolutely
+    - correct
+    - that's right
+    - ok
+    - okay
+    - of course
+    - definitely
+    - I agree
+    - that sounds good
+    - yes please
+
+- intent: deny
+  examples: |
+    - no
+    - nope
+    - not really
+    - I don't think so
+    - that's not right
+    - incorrect
+    - never
+    - no way
+    - not at all
+    - I don't want that
+
+- intent: search_products
+  examples: |
+    - I'm looking for [laptops](product_category)
+    - show me [shoes](product_category)
+    - find [headphones](product_category)
+    - I want to buy [smartphones](product_category)
+    - search for [watches](product_category)
+    - do you have [cameras](product_category)
+    - show me products in [electronics](product_category)
+    - I need [clothing](product_category)
+    - browse [books](product_category)
+    - what [products](product_category) do you have
+    - search products
+    - find products
+    - browse catalog
+    - show me your products
+    - what can I buy
+    - I'm shopping for [gaming laptops](product_category)
+    - looking for [running shoes](product_category)
+    - need [wireless earbuds](product_category)
+
+- intent: product_inquiry
+  examples: |
+    - tell me about [product name](product_name)
+    - what is [iPhone 15](product_name)
+    - details about [Samsung Galaxy](product_name)
+    - information on [MacBook Pro](product_name)
+    - describe [Nike Air Max](product_name)
+    - what are the features of [product](product_name)
+    - tell me more about this product
+    - product details
+    - product information
+    - what's this product
+    - I want to know about [product](product_name)
+
+- intent: check_price
+  examples: |
+    - how much does [iPhone](product_name) cost
+    - what's the price of [laptop](product_name)
+    - price for [shoes](product_name)
+    - how much is [product](product_name)
+    - cost of [item](product_name)
+    - what does [product](product_name) cost
+    - pricing for [product](product_name)
+    - show me the price
+    - tell me the price
+    - is [product](product_name) expensive
+
+- intent: check_availability
+  examples: |
+    - is [product](product_name) in stock
+    - do you have [iPhone](product_name) available
+    - availability of [laptop](product_name)
+    - is [product](product_name) available
+    - can I buy [product](product_name) now
+    - stock status of [product](product_name)
+    - do you stock [product](product_name)
+    - is it available
+    - check availability
+    - when will [product](product_name) be back in stock
+
+- intent: add_to_cart
+  examples: |
+    - add [product](product_name) to cart
+    - I want to add [item](product_name) to my cart
+    - put [product](product_name) in cart
+    - add to cart
+    - add this to my cart
+    - I'll take [product](product_name)
+    - add [product](product_name)
+    - add it to cart
+    - add to shopping cart
+    - I want to buy this
+
+- intent: view_cart
+  examples: |
+    - show my cart
+    - what's in my cart
+    - view cart
+    - show shopping cart
+    - display cart
+    - my cart
+    - cart contents
+    - what do I have in cart
+    - show items in cart
+    - review my cart
+
+- intent: remove_from_cart
+  examples: |
+    - remove [product](product_name) from cart
+    - delete [item](product_name) from cart
+    - take out [product](product_name) from cart
+    - remove from cart
+    - delete from cart
+    - remove this item
+    - I don't want [product](product_name) anymore
+    - remove it
+
+- intent: update_cart
+  examples: |
+    - change quantity of [product](product_name) to [3](quantity)
+    - update [product](product_name) quantity to [2](quantity)
+    - I want [5](quantity) of [product](product_name)
+    - change quantity
+    - update quantity
+    - modify cart
+    - update cart
+    - change the amount
+
+- intent: checkout
+  examples: |
+    - I want to checkout
+    - proceed to checkout
+    - checkout
+    - complete purchase
+    - buy now
+    - place order
+    - I'm ready to buy
+    - finish purchase
+    - complete order
+    - I want to pay
+
+- intent: order_status
+  examples: |
+    - where is my order
+    - order status
+    - track my order
+    - what's the status of order [12345](order_number)
+    - check order [12345](order_number)
+    - when will my order arrive
+    - order tracking
+    - status of my order
+    - where's my package
+    - when is my order coming
+    - track order [12345](order_number)
+
+- intent: order_history
+  examples: |
+    - show my orders
+    - order history
+    - my past orders
+    - previous orders
+    - what have I ordered
+    - show order history
+    - list my orders
+    - past purchases
+    - my order list
+
+- intent: cancel_order
+  examples: |
+    - cancel my order
+    - I want to cancel order [12345](order_number)
+    - cancel order [12345](order_number)
+    - cancel this order
+    - I don't want this order anymore
+    - cancel purchase
+    - cancel it
+    - please cancel
+
+- intent: return_request
+  examples: |
+    - I want to return [product](product_name)
+    - return this item
+    - I need to return order [12345](order_number)
+    - return request
+    - return product
+    - I want a refund
+    - process return
+    - return item
+    - initiate return
+
+- intent: shipping_inquiry
+  examples: |
+    - what are shipping options
+    - shipping methods
+    - how long does shipping take
+    - delivery time
+    - shipping cost
+    - how much is shipping
+    - free shipping
+    - express shipping
+    - when will it arrive
+    - delivery options
+    - shipping information
+
+- intent: payment_inquiry
+  examples: |
+    - what payment methods do you accept
+    - how can I pay
+    - payment options
+    - do you accept credit cards
+    - can I use PayPal
+    - payment methods
+    - how to pay
+    - accepted payments
+    - payment information
+
+- intent: apply_discount
+  examples: |
+    - I have a coupon code [SAVE20](coupon_code)
+    - apply discount code [SUMMER](coupon_code)
+    - use promo code [WELCOME](coupon_code)
+    - discount code [DEAL](coupon_code)
+    - apply coupon
+    - I have a promo code
+    - use discount
+    - apply code [CODE](coupon_code)
+
+- intent: compare_products
+  examples: |
+    - compare [iPhone](product_name) with [Samsung](product_name)
+    - show me differences between [product1](product_name) and [product2](product_name)
+    - compare products
+    - what's the difference
+    - which is better
+    - product comparison
+    - compare these items
+
+- intent: product_reviews
+  examples: |
+    - show reviews for [product](product_name)
+    - what do customers say about [product](product_name)
+    - product reviews
+    - customer reviews
+    - ratings for [product](product_name)
+    - show ratings
+    - what are the reviews
+    - user feedback
+
+- intent: size_inquiry
+  examples: |
+    - what sizes are available
+    - size chart
+    - do you have [large](size) size
+    - available sizes
+    - size options
+    - what size should I get
+    - size information
+
+- intent: color_inquiry
+  examples: |
+    - what colors are available
+    - available colors
+    - do you have [red](color) color
+    - color options
+    - show me colors
+    - what colors do you have
+
+- intent: help
+  examples: |
+    - help
+    - I need help
+    - can you help me
+    - assistance
+    - support
+    - I'm confused
+    - what can you do
+    - how does this work
+    - help me
+
+- intent: bot_challenge
+  examples: |
+    - are you a bot
+    - are you human
+    - am I talking to a bot
+    - am I talking to a human
+    - who are you
+    - what are you
+
+- intent: thank_you
+  examples: |
+    - thank you
+    - thanks
+    - thanks a lot
+    - thank you very much
+    - appreciate it
+    - I appreciate your help
+    - that's helpful
+    - great help
+
+- intent: out_of_scope
+  examples: |
+    - what's the weather
+    - tell me a joke
+    - what time is it
+    - how are you
+    - how old are you
+    - what's your favorite color
+    - do you like pizza

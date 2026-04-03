@@ -1,0 +1,330 @@
+version: "3.1"
+
+nlu:
+# ========== GREETINGS ==========
+- intent: greet
+  examples: |
+    - Hey
+    - Hello
+    - Hi
+    - Good morning
+    - Good afternoon
+    - Good evening
+    - Hey there
+    - Hiya
+    - What's up
+    - Howdy
+    - Greetings
+    - Hi there
+    - Hello there
+    - Hey bot
+    - Hi mate
+    - Yo
+    - Sup
+    - Morning
+    - Evening
+    - Hi friends
+
+# ========== GOODBYE ==========
+- intent: goodbye
+  examples: |
+    - Bye
+    - Goodbye
+    - See you
+    - Take care
+    - Farewell
+    - See you later
+    - Talk soon
+    - Catch you later
+    - Bye bye
+    - See ya
+    - Goodbye for now
+    - Until next time
+    - Gotta go
+    - Talk to you later
+    - TTYL
+    - See you soon
+    - Cya
+    - Bye friends
+
+# ========== THANKS ==========
+- intent: thanks
+  examples: |
+    - Thanks
+    - Thank you
+    - Appreciate it
+    - Thanks a lot
+    - Thanks so much
+    - Thank you so much
+    - Thanks buddy
+    - Cheers
+    - Much appreciated
+    - You're helpful
+    - Great help
+    - That helps
+    - Really helpful
+    - Thanks for your help
+    - Thank you for that
+    - Appreciate your help
+
+# ========== BUSINESS HOURS ==========
+- intent: ask_hours
+  examples: |
+    - What are your hours?
+    - When are you open?
+    - What time do you open?
+    - What time do you close?
+    - Are you open right now?
+    - Business hours?
+    - When are you available?
+    - What's your schedule?
+    - Working hours?
+    - When do you operate?
+    - Hours of operation?
+    - Do you have specific hours?
+    - When am I able to reach you?
+    - What times do you work?
+    - When are staff available?
+
+# ========== LOCATION ==========
+- intent: ask_location
+  examples: |
+    - Where are you located?
+    - What's your address?
+    - Where can I find you?
+    - Location?
+    - Where is your office?
+    - Can I visit you?
+    - Physical location?
+    - Your address?
+    - How do I get to you?
+    - Where do you operate?
+    - Which city are you in?
+    - Do you have a physical store?
+    - Address please?
+
+# ========== PRICING ==========
+- intent: ask_price
+  examples: |
+    - How much does it cost?
+    - What's the price?
+    - How much?
+    - Pricing?
+    - Cost?
+    - What are your prices?
+    - Do you have pricing info?
+    - How much do you charge?
+    - Price range?
+    - Are you affordable?
+    - What's your rate?
+    - Costs?
+    - Expensive?
+    - Budget friendly?
+    - Price list?
+
+# ========== PRODUCTS/SERVICES ==========
+- intent: ask_about_product
+  examples: |
+    - Tell me about your products
+    - What products do you offer?
+    - Product list?
+    - What do you sell?
+    - What services do you provide?
+    - What can you do for me?
+    - Your product range?
+    - Do you have [product]?
+    - What's available?
+    - Service offerings?
+    - Tell me more about what you do
+    - What's your specialty?
+    - Product information?
+    - Can you help with [service]?
+
+# ========== ORDERING ==========
+- intent: order
+  examples: |
+    - I want to buy something
+    - Can I place an order?
+    - I'd like to purchase
+    - How do I order?
+    - I want to order
+    - Place an order
+    - How to buy?
+    - Order now
+    - Make a purchase
+    - Buy from you
+    - Want to buy
+    - Can I get [product]?
+    - I need to order something
+    - Start an order
+
+# ========== HELP ==========
+- intent: help
+  examples: |
+    - Help
+    - I need help
+    - Can you help me?
+    - Assistance please
+    - Help me out
+    - I'm confused
+    - Can you assist?
+    - Need help
+    - Support?
+    - Customer support
+    - How can you help?
+    - What can you do?
+    - Get help
+    - Need assistance
+    - Stuck
+    - Struggling
+
+# ========== QUALITY/WARRANTY ==========
+- intent: ask_quality
+  examples: |
+    - Is your product quality good?
+    - Do you offer warranty?
+    - What's the quality like?
+    - Guarantee?
+    - Return policy?
+    - How long does it last?
+    - Is it durable?
+    - Quality assured?
+    - Reliability?
+    - Money back guarantee?
+    - What if it breaks?
+    - Warranty coverage?
+
+# ========== DELIVERY ==========
+- intent: ask_delivery
+  examples: |
+    - How long is delivery?
+    - When will I get it?
+    - Shipping time?
+    - Do you ship worldwide?
+    - Delivery options?
+    - How much is shipping?
+    - Free shipping?
+    - Track my order
+    - When will it arrive?
+    - Shipping cost?
+    - Express delivery?
+    - Delivery areas?
+
+# ========== PAYMENT ==========
+- intent: ask_payment
+  examples: |
+    - What payment methods do you accept?
+    - Do you take credit cards?
+    - Payment options?
+    - How do I pay?
+    - Payment methods?
+    - Can I pay with [method]?
+    - Do you have installments?
+    - Secure payment?
+    - Cryptocurrency?
+    - Wallet payment?
+    - Check payment?
+
+# ========== COMPLAINT ==========
+- intent: complaint
+  examples: |
+    - I'm not happy with my order
+    - This product is broken
+    - I want a refund
+    - Terrible service
+    - Not satisfied
+    - Poor quality
+    - Defective product
+    - I want to complain
+    - This is unacceptable
+    - Very disappointed
+    - Bad experience
+
+# ========== FEEDBACK ==========
+- intent: feedback
+  examples: |
+    - Great service!
+    - I love your products
+    - Excellent work
+    - Very satisfied
+    - Amazing!
+    - You're awesome
+    - Best company ever
+    - Highly recommend
+    - Great experience
+    - Perfect!
+    - Keep up the good work
+
+# ========== SMALL TALK ==========
+- intent: small_talk
+  examples: |
+    - How are you?
+    - How are you doing?
+    - What's new?
+    - How's it going?
+    - You okay?
+    - Stay safe
+    - Have a good day
+    - Enjoy your day
+    - What's your name?
+    - Are you a robot?
+    - Tell me a joke
+    - What can you do?
+
+# ========== SPECIAL OFFERS ==========
+- intent: ask_offers
+  examples: |
+    - Do you have any discounts?
+    - Any promotions?
+    - Sales going on?
+    - Coupon codes?
+    - Special offers?
+    - Deals?
+    - Seasonal sale?
+    - Flash sale?
+    - Bundle offers?
+    - Today's special?
+    - Any free stuff?
+
+# ========== TEAM INFO ==========
+- intent: ask_team
+  examples: |
+    - Who works for you?
+    - Tell me about your team
+    - How many employees?
+    - Who created you?
+    - Company info?
+    - About your company?
+    - Founding story?
+    - Team members?
+    - Expertise?
+    - Certifications?
+    - Awards won?
+
+# ========== CONTACT ==========
+- intent: ask_contact
+  examples: |
+    - How can I contact you?
+    - Phone number?
+    - Email address?
+    - Contact info?
+    - How do I reach you?
+    - Support email?
+    - Customer service number?
+    - Contact details?
+    - Can I call you?
+    - Message you?
+    - WhatsApp?
+    - Social media?
+
+nlu_fallback:
+- intent: nlu_fallback
+  examples: |
+    - This is completely random
+    - sdfsdfgsdfg
+    - zzzzzzzz
+    - akjasfkasjf
+    - I don't understand
+    - What?
+    - Huh?
+    - Can you repeat?
