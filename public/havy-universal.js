@@ -470,6 +470,7 @@
      No extra config needed — always injected when the script loads.
   ================================================================ */
 
+  if (cfg.enableDictation !== false) {
   (function initDictation() {
     if (!window.speechSynthesis) return;  // browser doesn't support TTS
 
@@ -566,5 +567,7 @@
     document.body.appendChild(btn);
 
   })();
+
+  } // end enableDictation
 
 })();

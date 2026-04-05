@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import {
   Copy, Check, Code, Globe, RefreshCw, Trash2, AlertCircle,
   CheckCircle2, TrendingUp, MessageSquareX, BarChart2, Zap,
+  MessageSquare, Mic, Volume2, Activity,
 } from 'lucide-react';
 import {
   LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell,
@@ -166,8 +167,49 @@ const ChatbotConfig: React.FC = () => {
     const origin = window.location.origin;
     const supa = import.meta.env.VITE_SUPABASE_URL || '';
     const anon = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
-    return `<script>window.HAVY_CONFIG={businessId:'${bizId || 'YOUR_BUSINESS_ID'}',chatbotKey:'${chatbotKey || 'YOUR_CHATBOT_KEY'}',supabaseUrl:'${supa}',supabaseAnonKey:'${anon}'};<\/script>\n<script src="${origin}/havy-universal.js" defer><\/script>`;
+    return [
+      `<script>`,
+      `window.HAVY_CONFIG = {`,
+      `  businessId:      '${bizId || 'YOUR_BUSINESS_ID'}',`,
+      `  chatbotKey:      '${chatbotKey || 'YOUR_CHATBOT_KEY'}',`,
+      `  supabaseUrl:     '${supa}',`,
+      `  supabaseAnonKey: '${anon}',`,
+      `  enableChatbot:   true,`,
+      `  enableUAT:       true,`,
+      `  enableDictation: true,`,
+      `};`,
+      `<\/script>`,
+      `<script src="${origin}/havy-universal.js" defer><\/script>`,
+    ].join('\n');
   };
+
+  /* ── Stripe-style syntax tokens ─────────────────────── */
+  type Token = { type: 'tag' | 'attr' | 'str' | 'bool' | 'punct' | 'plain'; val: string };
+  function tokenizeLine(line: string): Token[] {
+    // Handle HTML script tags
+    if (/^<\/?script/.test(line.trim())) {
+      return [{ type: 'tag', val: line }];
+    }
+    // Handle key: value lines
+    const kvMatch = line.match(/^(\s*)(\w+):(\s*)(.*)(,?)$/);
+    if (kvMatch) {
+      const [, indent, key, sp, raw, comma] = kvMatch;
+      const tokens: Token[] = [
+        { type: 'plain', val: indent },
+        { type: 'attr',  val: key },
+        { type: 'punct', val: ':' + sp },
+      ];
+      if (raw === 'true' || raw === 'false') {
+        tokens.push({ type: 'bool', val: raw });
+      } else {
+        tokens.push({ type: 'str', val: raw });
+      }
+      if (comma) tokens.push({ type: 'punct', val: comma });
+      return tokens;
+    }
+    // Braces / plain
+    return [{ type: 'punct', val: line }];
+  }
 
   const tipStyle = isDark
     ? { backgroundColor: '#1e293b', border: '1px solid #334155', color: '#e2e8f0' }
@@ -374,26 +416,131 @@ const ChatbotConfig: React.FC = () => {
       </ThemedCard>
 
 
-      {/* ── Embed Code ──────────────────────────────────────────────── */}
+      {/* ── Embed Code — Stripe-style terminal ────────────────────── */}
       <ThemedCard solid className="p-5 space-y-4">
-        <div className="flex justify-between items-center mb-4">
+
+        {/* Header row */}
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Code className="w-5 h-5" />
-            <h2 className={`text-lg font-semibold ${isDark ? 'text-white/90' : 'text-gray-900'}`}>Embed Code Snippet</h2>
+            <Code className="w-5 h-5 text-indigo-500" />
+            <h2 className={`text-lg font-semibold ${isDark ? 'text-white/90' : 'text-gray-900'}`}>
+              Universal Embed Snippet
+            </h2>
           </div>
-          <button onClick={() => { navigator.clipboard.writeText(generateSnippet()); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm ${isDark ? 'bg-gray-800 hover:bg-gray-700 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>
-            {copied ? <><Check className="w-4 h-4 text-green-500" /> Copied!</> : <><Copy className="w-4 h-4" /> Copy Code</>}
+
+          {/* Glowing copy button */}
+          <button
+            id="hv-copy-snippet"
+            onClick={() => { navigator.clipboard.writeText(generateSnippet()); setCopied(true); setTimeout(() => setCopied(false), 2500); }}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 7,
+              padding: '9px 18px', borderRadius: 10, border: 'none',
+              background: copied
+                ? 'linear-gradient(135deg,#10b981,#059669)'
+                : 'linear-gradient(135deg,#6366f1,#4f46e5)',
+              color: '#fff', fontSize: 13, fontWeight: 600, cursor: 'pointer',
+              boxShadow: copied
+                ? '0 4px 18px rgba(16,185,129,0.45)'
+                : '0 4px 18px rgba(99,102,241,0.45)',
+              transition: 'all .25s',
+            }}
+          >
+            {copied
+              ? <><Check size={14} /> Copied to clipboard!</>
+              : <><Copy size={14} /> Copy Snippet</>
+            }
           </button>
         </div>
-        <p className={`text-sm mb-3 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-          Paste into the <code>&lt;head&gt;</code> of your client website. One snippet activates the <strong className={isDark ? 'text-gray-200' : ''}>Chatbot</strong>, <strong className={isDark ? 'text-gray-200' : ''}>UAT tracking</strong>, and <strong className={isDark ? 'text-gray-200' : ''}>Dictation widget</strong>. Business name is fetched automatically — no extra config needed.
-        </p>
-        <div className="bg-gray-900 rounded-lg p-4">
-          <pre className="text-green-400 text-xs overflow-x-auto whitespace-pre-wrap">
-            <code>{generateSnippet()}</code>
-          </pre>
+
+        {/* Feature badges */}
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          {([
+            { Icon: MessageSquare, label: 'AI Chatbot',       color: '#6366f1', bg: 'rgba(99,102,241,0.1)'  },
+            { Icon: Activity,      label: 'UAT Tracking',     color: '#f59e0b', bg: 'rgba(245,158,11,0.1)'  },
+            { Icon: Volume2,       label: 'Dictation Widget', color: '#10b981', bg: 'rgba(16,185,129,0.1)'  },
+            { Icon: Mic,           label: 'Groq STT',         color: '#ec4899', bg: 'rgba(236,72,153,0.1)'  },
+          ] as const).map(({ Icon, label, color, bg }) => (
+            <span key={label} style={{
+              display: 'inline-flex', alignItems: 'center', gap: 5,
+              padding: '4px 11px', borderRadius: 999,
+              background: bg, color, fontSize: 11, fontWeight: 700,
+              border: `1px solid ${color}30`,
+            }}>
+              <Icon size={11} />{label}
+            </span>
+          ))}
         </div>
+
+        {/* Terminal panel */}
+        <div style={{
+          borderRadius: 14,
+          overflow: 'hidden',
+          boxShadow: '0 8px 40px rgba(0,0,0,0.55)',
+          border: '1px solid rgba(255,255,255,0.06)',
+        }}>
+          {/* macOS title bar */}
+          <div style={{
+            background: '#1c1c2e',
+            padding: '10px 16px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 7,
+            borderBottom: '1px solid rgba(255,255,255,0.06)',
+          }}>
+            {/* traffic-light dots */}
+            {['#ff5f57','#febc2e','#28c840'].map(c => (
+              <span key={c} style={{ width: 11, height: 11, borderRadius: '50%', background: c, display: 'inline-block' }} />
+            ))}
+            <span style={{ marginLeft: 10, fontSize: 11, color: '#6b7280', fontFamily: 'monospace', letterSpacing: '.3px' }}>
+              havy-universal — embed snippet
+            </span>
+          </div>
+
+          {/* Code body */}
+          <div style={{ background: '#0d0d1a', padding: '18px 0', overflowX: 'auto' }}>
+            <table style={{ borderCollapse: 'collapse', width: '100%', fontFamily: 'ui-monospace,"Cascadia Code","Fira Code",monospace', fontSize: 12 }}>
+              <tbody>
+                {generateSnippet().split('\n').map((line, i) => {
+                  const tokens = tokenizeLine(line);
+                  return (
+                    <tr key={i} style={{ lineHeight: '1.9' }}>
+                      {/* line number gutter */}
+                      <td style={{
+                        userSelect: 'none', textAlign: 'right', paddingRight: 18, paddingLeft: 20,
+                        color: '#3d3d5c', fontSize: 11, width: 36, verticalAlign: 'top',
+                      }}>{i + 1}</td>
+
+                      {/* code */}
+                      <td style={{ paddingRight: 28, whiteSpace: 'pre', verticalAlign: 'top' }}>
+                        {tokens.map((tok, j) => {
+                          const colorMap: Record<string, string> = {
+                            tag:   '#f472b6',   // pink  — <script>
+                            attr:  '#93c5fd',   // blue  — key name
+                            str:   '#fde68a',   // amber — string value
+                            bool:  '#6ee7b7',   // green — true/false
+                            punct: '#94a3b8',   // slate — : { } ,
+                            plain: '#e2e8f0',   // white — indent
+                          };
+                          return (
+                            <span key={j} style={{ color: colorMap[tok.type] || '#e2e8f0' }}>
+                              {tok.val}
+                            </span>
+                          );
+                        })}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Footer hint */}
+        <p style={{ fontSize: 11, color: isDark ? '#475569' : '#94a3b8', marginTop: 4, lineHeight: 1.6 }}>
+          Paste this once inside <code style={{ background: 'rgba(99,102,241,0.12)', padding: '1px 5px', borderRadius: 4, color: '#818cf8' }}>&lt;head&gt;</code> of your client site.
+          Business name, chatbot replies, UAT events, and the dictation button all activate automatically — no additional code needed.
+        </p>
       </ThemedCard>
     </div>
     </div>
