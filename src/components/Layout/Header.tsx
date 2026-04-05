@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Bot, User, LogOut, ChevronDown } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import { supabase } from "../../lib/supabase";
@@ -62,8 +62,23 @@ const ThemeToggle: React.FC = () => {
 const Header: React.FC = () => {
   const { user, business } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const handlePricingClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (location.pathname === '/') {
+      // Already on home — just scroll
+      document.getElementById('pricing-section')?.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      // Navigate home then scroll after mount
+      navigate('/');
+      setTimeout(() => {
+        document.getElementById('pricing-section')?.scrollIntoView({ behavior: 'smooth' });
+      }, 400);
+    }
+  };
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -105,7 +120,12 @@ const Header: React.FC = () => {
             {!user ? (
               <>
                 <NavLink to="/">Home</NavLink>
-                <NavLink to="/#pricing">Pricing</NavLink>
+                <button
+                  onClick={handlePricingClick}
+                  className="text-sm text-white/70 hover:text-white font-medium transition-colors duration-150"
+                >
+                  Pricing
+                </button>
                 <NavLink to="/login">Login</NavLink>
                 <Link
                   to="/signup"
@@ -117,7 +137,7 @@ const Header: React.FC = () => {
             ) : (
               <>
                 <NavLink to="/dashboard">Dashboard</NavLink>
-                <NavLink to="/integrations">Integrations</NavLink>
+                <NavLink to="/dashboard/integrations">Integrations</NavLink>
 
                 {/* Business Dropdown */}
                 <div className="relative" ref={dropdownRef}>

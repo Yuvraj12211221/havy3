@@ -61,19 +61,17 @@ const PlanBenefitsDisplay: React.FC = () => {
       value: benefits.maxTtsCharacters,
       unit: '/month',
     },
-    {
-      icon: Database,
-      label: 'Storage',
-      value: benefits.storageGB,
-      unit: 'GB',
-    },
   ];
 
+  const isPaidPlan = planId !== 'free';
+  const isProOrHigher = planId === 'professional' || planId === 'enterprise';
+  const isEnterprise = planId === 'enterprise';
+
   const featureFlags = [
-    { icon: BarChart3, label: 'Analytics', enabled: benefits.hasAnalytics },
-    { icon: Shield, label: 'Priority Support', enabled: benefits.hasPrioritySupport },
-    { icon: Globe, label: 'Custom Branding', enabled: benefits.hasCustomBranding },
-    { icon: Globe, label: 'Custom Domain', enabled: benefits.hasCustomDomain },
+    { icon: BarChart3, label: 'Analytics', enabled: isPaidPlan },
+    { icon: Shield, label: 'Priority Support', enabled: isProOrHigher },
+    { icon: Globe, label: 'Custom Branding', enabled: isProOrHigher },
+    { icon: Globe, label: 'Custom Domain', enabled: isEnterprise },
   ];
 
   const planDisplayName = planId.charAt(0).toUpperCase() + planId.slice(1);

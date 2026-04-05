@@ -11,7 +11,6 @@ export type UpgradeReferralSource =
   | 'faq_limit'
   | 'api_limit'
   | 'tts_limit'
-  | 'storage_limit'
   | 'analytics_feature'
   | 'custom_branding'
   | 'priority_support'

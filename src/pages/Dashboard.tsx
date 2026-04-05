@@ -59,18 +59,6 @@ export default function Dashboard() {
     loadBusinessData();
   }, [user]);
 
-  /* ---------- Load saved widget config ---------- */
-  const getChatbotConfig = () => {
-    const saved = localStorage.getItem("chatbot_config");
-    if (!saved) return null;
-    try {
-      return JSON.parse(saved);
-    } catch {
-      return null;
-    }
-  };
-
-  const chatbotConfig = getChatbotConfig();
 
   /* ---------- Auth Guards ---------- */
   if (loading) return <div className="p-8">Loading...</div>;
@@ -113,25 +101,21 @@ export default function Dashboard() {
             path="settings"
             element={
               <div className="card">
-                <h1 className="text-xl font-semibold">
-                  Account Settings
-                </h1>
-                <p className="text-gray-600 mt-2">
-                  Update your account preferences.
-                </p>
+                <h1 className="text-xl font-semibold">Account Settings</h1>
+                <p className="text-gray-600 mt-2">Update your account preferences.</p>
               </div>
             }
           />
         </Routes>
       </main>
 
-      {/* ---------- Chatbot Widget — renders only when key is ready ---------- */}
+      {/* Chatbot Widget — fixed indigo, bottom-right; only when business key is ready */}
       {user && chatbotKey && (
         <ChatbotWidget
           chatbotKey={chatbotKey}
           businessName={businessName}
-          position={chatbotConfig?.position || "bottom-right"}
-          primaryColor={chatbotConfig?.primaryColor || "#6366f1"}
+          position="bottom-right"
+          primaryColor="#6366f1"
         />
       )}
     </div>

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTimeTheme } from '../../hooks/useTimeTheme';
 
 interface LimitCheckProps {
-  resourceType: 'chatbots' | 'faqDocuments' | 'apiCalls' | 'ttsCharacters';
+  resourceType: 'chatbots' | 'faqDocuments' | 'apiCalls' | 'ttsCharacters' | 'emailResponses';
   currentUsage: number;
   showAlertAt?: number; // percentage threshold (default 80%)
   onLimitReached?: () => void;
@@ -29,6 +29,7 @@ const LimitEnforcement: React.FC<LimitCheckProps> = ({
     faqDocuments: benefits.maxFaqDocuments,
     apiCalls: benefits.maxApiCalls,
     ttsCharacters: benefits.maxTtsCharacters,
+    emailResponses: benefits.maxEmailResponses,
   };
 
   const limit = limitMap[resourceType];
@@ -49,6 +50,7 @@ const LimitEnforcement: React.FC<LimitCheckProps> = ({
     faqDocuments: 'FAQ Documents',
     apiCalls: 'API Calls',
     ttsCharacters: 'TTS Characters',
+    emailResponses: 'Email Auto-Responses',
   };
 
   return (
@@ -125,7 +127,7 @@ const LimitEnforcement: React.FC<LimitCheckProps> = ({
 };
 
 // Hook for checking limits easier
-export const useLimitCheck = (resourceType: 'chatbots' | 'faqDocuments' | 'apiCalls' | 'ttsCharacters', currentUsage: number) => {
+export const useLimitCheck = (resourceType: 'chatbots' | 'faqDocuments' | 'apiCalls' | 'ttsCharacters' | 'emailResponses', currentUsage: number) => {
   const { benefits } = useSubscription();
   
   const limitMap = {
@@ -133,6 +135,7 @@ export const useLimitCheck = (resourceType: 'chatbots' | 'faqDocuments' | 'apiCa
     faqDocuments: benefits?.maxFaqDocuments ?? 0,
     apiCalls: benefits?.maxApiCalls ?? 0,
     ttsCharacters: benefits?.maxTtsCharacters ?? 0,
+    emailResponses: benefits?.maxEmailResponses ?? 0,
   };
 
   const limit = limitMap[resourceType];

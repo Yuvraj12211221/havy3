@@ -12,7 +12,7 @@ export default function DictationToggle() {
       onClick={toggleDictation}
       aria-label="Toggle dictation mode"
       className={`
-        fixed bottom-6 right-6 z-50
+        fixed bottom-6 left-1/2 -translate-x-1/2 z-50
         flex items-center gap-2
         rounded-full px-4 py-3
         text-sm font-medium

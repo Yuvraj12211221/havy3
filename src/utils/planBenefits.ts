@@ -63,25 +63,15 @@ export const getPlanFeaturesList = (planId: string): string[] => {
 
   features.push(`${benefits.maxApiCalls.toLocaleString()} API calls/month`);
   features.push(`${benefits.maxTtsCharacters.toLocaleString()} TTS characters/month`);
-  features.push(`${benefits.storageGB}GB storage`);
 
-  if (benefits.hasAnalytics) {
-    features.push('Advanced analytics');
-  }
+  const isPaidPlan = planId.toLowerCase() !== 'free';
+  const isProOrHigher = planId === 'professional' || planId === 'enterprise';
+  const isEnterprise = planId === 'enterprise';
 
-  if (benefits.hasPrioritySupport) {
-    features.push('Priority support');
-  }
-
-  if (benefits.hasCustomBranding) {
-    features.push('Custom branding');
-  }
-
-  if (benefits.hasCustomDomain) {
-    features.push('Custom domain');
-  }
-
-  features.push(`${benefits.hasIntegrations.length} integrations available`);
+  if (isPaidPlan) features.push('Advanced analytics');
+  if (isProOrHigher) features.push('Priority support');
+  if (isProOrHigher) features.push('Custom branding');
+  if (isEnterprise) features.push('Custom domain');
 
   return features;
 };

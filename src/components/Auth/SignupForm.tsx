@@ -40,16 +40,12 @@ const SignupForm: React.FC = () => {
       return;
     }
 
-    const { error: profileError } = await supabase
+    // Try to update profile — non-blocking (profile may be created by DB trigger)
+    await supabase
       .from('profiles')
-      .update({ full_name: formData.name, company_name: formData.company })
+      .upsert({ id: data.user.id, full_name: formData.name, company_name: formData.company })
       .eq('id', data.user.id);
-
-    if (profileError) {
-      setError(profileError.message);
-      setIsLoading(false);
-      return;
-    }
+    // Ignore profile upsert errors — account creation succeeded
 
     setIsLoading(false);
     navigate('/pricing-select');

@@ -6,8 +6,6 @@ import { DictationProvider } from './contexts/DictationContext';
 
 import Header from './components/Layout/Header';
 import Footer from './components/Layout/Footer';
-import ChatbotWidget from './components/Chatbot/ChatbotWidget';
-
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -105,13 +103,6 @@ const AppContent: React.FC = () => {
             <Footer />
 
             <DictationToggle />
-            
-            <ChatbotWidget 
-              rasaServerUrl="http://localhost:5005"
-              businessName="HAVY AI Services"
-              position="bottom-right"
-              primaryColor="#6366f1"
-            />
           </div>
         </DictationProvider>
       </SubscriptionProvider>
