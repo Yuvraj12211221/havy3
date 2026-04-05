@@ -478,44 +478,127 @@
     var lastText = '', lastTime = 0;
     var hoverT = null;
 
-    /* ── Ignored tags (same list as useDictationCapture.ts) ─── */
-    var IGNORED = ['INPUT','TEXTAREA','SVG','PATH','HEADER','FOOTER','UL','OL','LI','NAV'];
+    /* ── Tags whose own content we never read (keep minimal) ──── */
+    var SKIP_TAGS = {
+      INPUT:1, TEXTAREA:1, SELECT:1, OPTION:1, OPTGROUP:1,
+      SCRIPT:1, STYLE:1, NOSCRIPT:1, TEMPLATE:1,
+      SVG:1, PATH:1, CIRCLE:1, RECT:1, LINE:1, POLYLINE:1, POLYGON:1,
+      CANVAS:1, VIDEO:1, AUDIO:1, IFRAME:1, EMBED:1, OBJECT:1,
+    };
 
-    function extractText(el) {
-      if (!(el instanceof HTMLElement)) return null;
-      if (IGNORED.indexOf(el.tagName) >= 0) return null;
-      if (el.tagName === 'DIV' && el.children.length > 0) return null;
-      var t = el.innerText && el.innerText.trim();
-      if (!t || t.length < 3 || t.length > 300 || t.split(' ').length > 40) return null;
-      return t;
+    /* Never read anything inside the HAVY widget itself */
+    function insideHavy(el) {
+      var n = el;
+      while (n) {
+        if (n.id === 'hv' || n.id === 'hv-dict') return true;
+        n = n.parentElement;
+      }
+      return false;
     }
 
-    function speak(text) {
+    function cleanText(raw) {
+      if (!raw) return '';
+      return raw.replace(/\s+/g, ' ').trim();
+    }
+
+    /* Extract best label from a single element */
+    function extractFromEl(el) {
+      if (!el || !(el instanceof HTMLElement)) return '';
+      if (SKIP_TAGS[el.tagName]) return '';
+      var tag = el.tagName;
+      /* Buttons / links / interactive — prefer aria-label, then visible text */
+      if (tag === 'BUTTON' || tag === 'A' || el.getAttribute('role') === 'button') {
+        return cleanText(
+          el.getAttribute('aria-label') ||
+          el.getAttribute('title') ||
+          el.innerText
+        );
+      }
+      /* Images */
+      if (tag === 'IMG') {
+        return cleanText(el.getAttribute('alt') || el.getAttribute('title') || '');
+      }
+      /* Headings */
+      if (/^H[1-6]$/.test(tag)) return cleanText(el.innerText || '');
+      /* aria-label on icon-only elements */
+      var ariaLbl = el.getAttribute('aria-label');
+      if (ariaLbl && !el.innerText.trim()) return cleanText(ariaLbl);
+      /* Fallback — all visible text */
+      return cleanText(el.innerText || '');
+    }
+
+    /*
+     * Walk from hovered/clicked element UP to 6 ancestors.
+     * Prefer semantic leaf containers; fall back to any tight text wrapper.
+     */
+    function extractText(el) {
+      if (!(el instanceof HTMLElement)) return null;
+      if (insideHavy(el)) return null;
+      var node = el;
+      var best = '';
+      for (var depth = 0; depth < 6 && node && node !== document.body; depth++) {
+        if (SKIP_TAGS[node.tagName]) { node = node.parentElement; continue; }
+        var text = extractFromEl(node);
+        if (!text || text.length < 2) { node = node.parentElement; continue; }
+        var wordCount = text.split(/\s+/).length;
+        /* Semantic leaf containers */
+        var isSemantic = /^(P|LI|TD|TH|LABEL|FIGCAPTION|BLOCKQUOTE|CITE|PRE|CODE|SMALL|STRONG|EM|SPAN|B|I|U|MARK|BUTTON|A|H[1-6])$/.test(node.tagName);
+        if (isSemantic && wordCount <= 120 && text.length <= 600) { best = text; break; }
+        /* Non-semantic divs — use only if direct text nodes are substantial */
+        if (!isSemantic) {
+          var directText = '';
+          node.childNodes.forEach(function(c) { if (c.nodeType === 3) directText += c.textContent; });
+          directText = cleanText(directText);
+          if (directText.length >= 2 && directText.length <= 600) { best = directText; break; }
+        }
+        /* Last-resort fallback */
+        if (!best && text.length <= 600 && wordCount <= 80) best = text;
+        node = node.parentElement;
+      }
+      return best.length >= 2 ? best : null;
+    }
+
+    /* speak() — immediate flag bypasses hover cooldown */
+    function speak(text, immediate) {
       var now = Date.now();
-      if (now - lastTime < 1500) return;
-      if (text === lastText) return;
+      if (!immediate && now - lastTime < 1200) return;
+      if (text === lastText && now - lastTime < 3000) return;
       lastTime = now; lastText = text;
       window.speechSynthesis.cancel();
       var u = new SpeechSynthesisUtterance(text);
+      u.rate = 1.05; u.pitch = 1.0;
       var lang = document.documentElement.lang ? document.documentElement.lang.slice(0,2) : 'en';
-      u.lang = lang;
+      u.lang = lang || 'en';
+      /* Auto-detect Indian language scripts */
+      if (/[\u0900-\u097F]/.test(text)) u.lang = 'hi-IN';
+      else if (/[\u0C80-\u0CFF]/.test(text)) u.lang = 'kn-IN';
+      else if (/[\u0B80-\u0BFF]/.test(text)) u.lang = 'ta-IN';
+      else if (/[\u0C00-\u0C7F]/.test(text)) u.lang = 'te-IN';
       window.speechSynthesis.speak(u);
     }
 
+    /* Hover — 350 ms debounce */
+    var lastHoveredEl = null;
     function onHover(e) {
       if (!isOn) return;
+      if (e.target === lastHoveredEl) return;
+      lastHoveredEl = e.target;
       clearTimeout(hoverT);
       var target = e.target;
-      hoverT = setTimeout(function(){
+      hoverT = setTimeout(function() {
+        if (insideHavy(target)) return;
         var t = extractText(target);
-        if (t) speak(t);
-      }, 500);
+        if (t) speak(t, false);
+      }, 350);
     }
 
+    /* Click — speak immediately */
     function onClick(e) {
       if (!isOn) return;
+      if (insideHavy(e.target)) return;
+      clearTimeout(hoverT);
       var t = extractText(e.target);
-      if (t) speak(t);
+      if (t) speak(t, true);
     }
 
     document.addEventListener('mouseover', onHover);
