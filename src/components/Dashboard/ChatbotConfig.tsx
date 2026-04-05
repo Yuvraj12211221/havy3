@@ -29,7 +29,6 @@ const ChatbotConfig: React.FC = () => {
   const [scrapeError, setScrapeError] = useState('');
   const [scrapedInfo, setScrapedInfo] = useState<{ count: number; lastAt: string } | null>(null);
   const [bizId, setBizId] = useState<string | null>(null);
-  const [bizName, setBizName] = useState('');
   const [chatbotKey, setChatbotKey] = useState('');
 
   // FAQ / stats state
@@ -45,12 +44,11 @@ const ChatbotConfig: React.FC = () => {
     if (!user) return;
     const { data: biz } = await supabase
       .from('businesses')
-      .select('id, business_name, chatbot_key')
+      .select('id, chatbot_key')
       .eq('user_id', user.id)
       .single();
     if (biz) {
       setBizId(biz.id);
-      setBizName(biz.business_name || '');
       setChatbotKey(biz.chatbot_key || '');
       await Promise.all([loadFaqAnalytics(biz.id), loadScrapedInfo(biz.id)]);
     }
@@ -166,31 +164,9 @@ const ChatbotConfig: React.FC = () => {
 
   const generateSnippet = () => {
     const origin = window.location.origin;
-    return `<!-- HAVY Chatbot + UAT Widget -->
-<script>
-(function(){
-  window.HAVYChatbotConfig = {
-    chatbotKey: '${chatbotKey || 'YOUR_CHATBOT_KEY'}',
-    businessName: '${bizName || 'Your Business'}',
-    position: 'bottom-right',
-    primaryColor: '#6366f1',
-    havyOrigin: '${origin}',
-    supabaseUrl: '${import.meta.env.VITE_SUPABASE_URL}',
-    anonKey: '${import.meta.env.VITE_SUPABASE_ANON_KEY}',
-  };
-  window.HAVY_CLIENT_ID = '${bizId || 'YOUR_BUSINESS_ID'}';
-  window.HAVY_SUPABASE_URL = '${import.meta.env.VITE_SUPABASE_URL}';
-  window.HAVY_SUPABASE_ANON_KEY = '${import.meta.env.VITE_SUPABASE_ANON_KEY}';
-
-  var s = document.createElement('script');
-  s.src = '${origin}/chatbot-widget.js'; s.defer = true;
-  document.head.appendChild(s);
-
-  var u = document.createElement('script');
-  u.src = '${origin}/uat.js'; u.defer = true;
-  document.head.appendChild(u);
-})();
-</script>`;
+    const supa = import.meta.env.VITE_SUPABASE_URL || '';
+    const anon = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+    return `<script>window.HAVY_CONFIG={businessId:'${bizId || 'YOUR_BUSINESS_ID'}',chatbotKey:'${chatbotKey || 'YOUR_CHATBOT_KEY'}',supabaseUrl:'${supa}',supabaseAnonKey:'${anon}'};<\/script>\n<script src="${origin}/havy-universal.js" defer><\/script>`;
   };
 
   const tipStyle = isDark
@@ -411,7 +387,7 @@ const ChatbotConfig: React.FC = () => {
           </button>
         </div>
         <p className={`text-sm mb-3 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>
-          Paste into the <code>&lt;head&gt;</code> of your client website. The GIF icon, FAQ, and UAT tracking all load from <strong className={isDark ? 'text-gray-200' : ''}>HAVY's origin</strong> automatically.
+          Paste into the <code>&lt;head&gt;</code> of your client website. One snippet activates the <strong className={isDark ? 'text-gray-200' : ''}>Chatbot</strong>, <strong className={isDark ? 'text-gray-200' : ''}>UAT tracking</strong>, and <strong className={isDark ? 'text-gray-200' : ''}>Dictation widget</strong>. Business name is fetched automatically — no extra config needed.
         </p>
         <div className="bg-gray-900 rounded-lg p-4">
           <pre className="text-green-400 text-xs overflow-x-auto whitespace-pre-wrap">
